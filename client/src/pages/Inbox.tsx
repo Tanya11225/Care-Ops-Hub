@@ -3,7 +3,8 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "@/hooks/use-auth";
 import { Mic, Send, Phone, Video, Search, MessageSquare } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useVoiceRecorder, useVoiceStream } from "../../replit_integrations/audio";
+import { useVoiceRecorder } from "@/hooks/useVoiceRecorder";
+import { useVoiceStream } from "@/hooks/useVoiceStream";
 
 // We assume these endpoints exist from the integration
 interface Conversation {

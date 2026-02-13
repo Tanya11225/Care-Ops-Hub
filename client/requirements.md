@@ -14,4 +14,4 @@ fontFamily: {
   display: ["Cal Sans", "Inter", "sans-serif"],
 }
 Chat integration uses /api/conversations endpoints
-Audio integration uses client/replit_integrations/audio hooks
+Audio integration uses browser Web Audio API

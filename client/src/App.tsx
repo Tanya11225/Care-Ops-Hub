@@ -12,6 +12,8 @@ import Dashboard from "@/pages/Dashboard";
 import Inbox from "@/pages/Inbox";
 import Bookings from "@/pages/Bookings";
 import Inventory from "@/pages/Inventory";
+import Contacts from "@/pages/Contacts";
+import Forms from "@/pages/Forms";
 import AuthPage from "@/pages/AuthPage";
 import PublicBooking from "@/pages/PublicBooking";
 import NotFound from "@/pages/not-found";
@@ -60,6 +62,12 @@ function Router() {
       </Route>
       <Route path="/bookings">
         <ProtectedRoute component={Bookings} />
+      </Route>
+      <Route path="/contacts">
+        <ProtectedRoute component={Contacts} />
+      </Route>
+      <Route path="/forms">
+        <ProtectedRoute component={Forms} />
       </Route>
       <Route path="/inventory">
         <ProtectedRoute component={Inventory} />

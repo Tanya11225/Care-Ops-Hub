@@ -16,11 +16,6 @@ export async function registerRoutes(
   await setupAuth(app);
   registerAuthRoutes(app);
 
-  // Setup Chat/Audio/Image Integrations
-  // Using Audio routes for voice features, which includes conversation management
-  registerAudioRoutes(app); 
-  registerImageRoutes(app);
-
   // Core Business Routes
 
   // Contacts

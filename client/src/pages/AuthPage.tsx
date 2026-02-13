@@ -1,10 +1,35 @@
 import { useAuth } from "@/hooks/use-auth";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useLocation } from "wouter";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function AuthPage() {
   const { user, isLoading } = useAuth();
   const [, setLocation] = useLocation();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
+  const queryClient = useQueryClient();
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoggingIn(true);
+    try {
+      const response = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ email, password }),
+      });
+      if (response.ok) {
+        queryClient.invalidateQueries({ queryKey: ["/api/auth/user"] });
+        setLocation("/");
+      }
+    } catch (err) {
+      console.error("Login failed", err);
+    }
+    setIsLoggingIn(false);
+  };
 
   useEffect(() => {
     if (user && !isLoading) {
@@ -49,12 +74,31 @@ export default function AuthPage() {
             <p className="mt-2 text-muted-foreground">Sign in to manage your operations</p>
           </div>
 
-          <a 
-            href="/api/login"
-            className="block w-full py-4 px-6 bg-foreground text-background rounded-xl font-bold text-lg hover:opacity-90 transition-all shadow-xl hover:-translate-y-1"
-          >
-            Sign in with Replit
-          </a>
+          <form onSubmit={handleLogin} className="space-y-4">
+            <input
+              type="email"
+              placeholder="you@example.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full px-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+              required
+            />
+            <input
+              type="password"
+              placeholder="Password (any value works)"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full px-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+              required
+            />
+            <button
+              type="submit"
+              disabled={isLoggingIn}
+              className="block w-full py-4 px-6 bg-foreground text-background rounded-xl font-bold text-lg hover:opacity-90 transition-all shadow-xl hover:-translate-y-1 disabled:opacity-50"
+            >
+              {isLoggingIn ? "Signing in..." : "Sign In"}
+            </button>
+          </form>
 
           <p className="text-xs text-muted-foreground mt-8">
             By signing in, you agree to our Terms of Service and Privacy Policy.
